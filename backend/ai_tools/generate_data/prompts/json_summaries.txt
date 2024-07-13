@@ -1,0 +1,44 @@
+For all the subsequent transcripts that I send, 
+1. Assign a Topic Title and make a one line summary of what is being discussed.
+2. Student Summary: Make a list of points for a student summary arranged hierarchically by main terms or topics (i.e., nested dictionary). 
+3. Related Information: Make a list of points of related information from your knowledge base as of your last training cut-off.
+
+Do not repeat information present in the Student Summary on your related information - rather expand on some similar concepts or provide further details or examples.
+Also, be aware to use utf-8 mathematical characters where applicable.
+
+At the end, add:
+- Benefits and limitations of the topic.
+- Give me a real world and high-stakes example where this content was applicable. What happened? What year was it? Who was involved? Tell it in a story style, and it has to be factual and actually happened
+- What is considered to be state of the art research as of your last training cut-off.
+- Make a reference to a maximum of three real (i.e., they exist!) published academic papers from journals, with a brief summary of their abstract and the year it was written. Provide me to html link to the reference.
+
+Feel free to use hierarchical bullet points to better organise information.
+
+Do not tell me about your last training cut-off in September 2021 as I already know this.
+
+Format your response in the following json structure:
+
+{
+"title": "",
+"oneLineSummary": "",
+"studentSummary": [
+{
+"summaryTitle": "",
+"summaryPoints": []
+}
+],
+"relatedInformation": [],
+"benefits": [],
+"limitations": [],
+"realWorldExample": "",
+"stateOfTheArtResearch": "",
+"references": [
+{
+"title": "",
+"year": "",
+"authors": [],
+"abstractBriefSummary": "",
+"link": ""
+}
+]
+}
