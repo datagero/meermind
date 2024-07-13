@@ -4,8 +4,8 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import logging 
 
-import database.functions as db
-import ai_tools.generate_data.main as ai
+import api.database.functions as db
+# import api.ai_tools.generate_data.main as ai
 
 logging.basicConfig(
         level=logging.DEBUG, 
@@ -30,7 +30,6 @@ if os.environ.get("DEBUG") is not None:
     # logger.debug(f'URI: {os.environ.get("DB_CONNECTION_CONNECTION_STRING")}')
 
 @app.route('/', methods=['GET'])
-
 def home():
     return 'Hello, World!'
 
@@ -43,10 +42,9 @@ def allowedFile(filename):
 def fileUpload():
     if request.method == 'POST':
         files = request.files.getlist('files')
-        print(request.files, "....")
+        module_name = request.form.get("module_name")
         for file in files:
             if file.filename is not None:
-                print(file.filename)
                 filename = secure_filename(file.filename)
 
                 if allowedFile(filename):
@@ -54,11 +52,11 @@ def fileUpload():
                     # db.save(transcript_file)
 
                     name, file_ext = os.path.splitext(filename)
-                    module_name='meermind'
+                    module_name='meermind' # FIX delete this later
                     file_data = file.read()
                     db.insert_transcript(module_name, name, file_ext, file_data)
 
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
                     # Start to openai-api service
                     # formatted_response = ai.process_transcript(file_data.decode('utf-8'))
@@ -85,71 +83,45 @@ def fileUpload():
         return jsonify({"status": "Upload API GET Request Running"})
 
 
-temp_objects = {"notes": 
-                    [ {
-    "title": "Fascinating Meerkat Facts",
-    "oneLineSummary": "Discussion about interesting facts related to meerkats, their behavior, and diet.",
-    "studentSummary": [
-        {
-            "summaryTitle": "Meerkat Characteristics",
-            "summaryPoints": [
-                "The dark markings under meerkats' eyes act like sunglasses in the harsh desert light.",
-                "Meerkats are vigilant against predators like eagles and jackals, with some standing guard while others forage.",
-                "They live in social groups called mobs, ranging from five to thirty members, and are fiercely territorial.",
-                "Meerkats dig burrows and tunnels in their territory for shelter and rest.",
-                "They are members of the Mongoose family, grow up to 12 inches, and weigh about two pounds.",
-                "Meerkats exhibit playful wrestling behavior, starting from a young age."
-            ]
-        },
-        {
-            "summaryTitle": "Meerkat Diet",
-            "summaryPoints": [
-                "Meerkats love to eat scorpions and are immune to their venom.",
-                "If scorpions are not available, they will also consume beetles, spiders, lizards, and small rodents."
-            ]
-        }
-    ],
-    "relatedInformation": [],
-    "benefits": [],
-    "limitations": [],
-    "realWorldExample": "In 2017, a wildlife documentary crew captured footage of a meerkat mob defending their territory from a rival group intruding on their turf. The footage showcased the intense territorial behaviors and strategic defense tactics exhibited by the meerkats, providing valuable insights into their social dynamics and survival instincts.",
-    "stateOfTheArtResearch": "",
-    "references": []
-},
-{
-    "title": "Another One",
-    "oneLineSummary": "another one line summary",
-    "studentSummary": [
-        {
-            "summaryTitle": "Another title",
-            "summaryPoints": [
-                "TESTING",
-            ]
-        },
-        {
-            "summaryTitle": "Some title",
-            "summaryPoints": [
-                "More information",
-            ]
-        }
-    ],
-    "relatedInformation": [],
-    "benefits": [],
-    "limitations": [],
-    "realWorldExample": "EXAMPLES",
-    "stateOfTheArtResearch": "",
-    "references": []
-}
-        ]}
-
 @app.route('/get-notes', methods=['GET'])
-def get_transcripts():
-    #TODO get objects from the mongodb 
+def get_summaries():
+    # get objects from the mongodb 
+    summaries = db.get_all_summaries()
+    # any processing before sending (?)
 
-    #TODO any processing before sending 
+    # send data to frontend
+    return jsonify(summaries);
 
-    #TODO send data to frontend
-    return jsonify(temp_objects);
+@app.route('/get-transcript/<int:hash>', methods=['GET'])
+def get_transcript(hash):
+    # get objects from the mongodb 
+    transcript = db.get_transcript(hash)
+    # any processing before sending (?)
+
+    # send data to frontend
+    return jsonify(transcript);
+
+@app.route('/get-note/<int:document_hash_id>', methods=['GET','POST'])
+def get_summary(document_hash_id):
+    # get objects from the mongodb 
+    results = db.get_summary(document_hash_id)
+    # any processing before sending (?)
+    
+    # send data to frontend
+    return jsonify({"results":results});
+
+@app.route('/get-note/<int:pk>/update', methods=['GET','POST'])
+def update_transcript(pk):
+    # change the summaries information 
+
+    return jsonify({"results":results});
+
+@app.route('/get-note/<int:pk>/delete', methods=['GET','POST'])
+def delete_transcripts(pk):
+    # delete the summary
+
+    return jsonify({"results":results});
+
 
 if __name__ == '__main__':
    app.run(port=5000)

@@ -2,6 +2,7 @@ import os
 import logging
 import json
 import hashlib
+from bson.objectid import ObjectId
 from pymongo import MongoClient
 from bson.binary import Binary
 from dotenv import load_dotenv
@@ -115,3 +116,17 @@ def careful_delete_collections():
     # document_hash_id_collection.drop()
     # print("Mapping collection dropped")
     pass
+
+def get_all_transcripts():
+    documents = transcript_collection.find({}, {'_id': 0})
+    return list(documents)
+
+def get_all_summaries():
+    documents = transcript_summary_collection.find({}, {'_id': 0})
+    return list(documents)
+
+def get_summary(pk):
+    document = transcript_summary_collection.find({"_id":pk})
+    return list(document)
+
+
