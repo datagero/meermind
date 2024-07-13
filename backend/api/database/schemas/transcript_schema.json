@@ -1,17 +1,9 @@
 {
     "$jsonSchema": {
         "bsonType": "object",
-        "required": ["module_name", "file_name", "file_ext", "file_data"],
+        "required": ["document_hash_id", "file_data"],
         "properties": {
-            "module_name": {
-                "bsonType": "string",
-                "description": "must be a string and is required"
-            },
-            "file_name": {
-                "bsonType": "string",
-                "description": "must be a string and is required"
-            },
-            "file_ext": {
+            "document_hash_id": {
                 "bsonType": "string",
                 "description": "must be a string and is required"
             },

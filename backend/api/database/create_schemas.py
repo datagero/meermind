@@ -32,12 +32,10 @@ with open(schema_file, 'r') as file:
     db.command("collMod", collection_name, validator=schema)
 
 # Create indexes for module_name, file_name, and file_ext
-transcript_collection.create_index("module_name")
-transcript_collection.create_index("file_name")
-transcript_collection.create_index("file_ext")
+transcript_collection.create_index("document_hash_id")
 
 # =============================================================================
-# Create the transcript collection
+# Create the transcript_summary collection
 collection_name = "transcript_summary_schema"
 transcript_summary_collection = db[collection_name]
 
@@ -51,8 +49,24 @@ with open(schema_file, 'r') as file:
     db.command("collMod", collection_name, validator=schema)
 
 # Create indexes for module_name, file_name, and file_ext
-transcript_summary_collection.create_index("module_name")
-transcript_summary_collection.create_index("file_name")
-transcript_summary_collection.create_index("file_ext")
+transcript_summary_collection.create_index("document_hash_id")
 
-print("Transcript collection created successfully with schema applied!")
+# =============================================================================
+# Create the document_hash_id collection
+collection_name = "document_hash_id"
+document_hash_id_collection = db[collection_name]
+
+# Insert and remove a dummy document to create the collection
+document_hash_id_collection.insert_one({"_id": "dummy"})
+document_hash_id_collection.delete_one({"_id": "dummy"})
+
+schema_file = "backend/database/schemas/document_hash_id_schema.json"
+with open(schema_file, 'r') as file:
+    schema = json.load(file)
+    db.command("collMod", collection_name, validator=schema)
+
+# Create indexes for module_name, file_name, and file_ext
+document_hash_id_collection.create_index("document_hash_id")
+
+# =============================================================================
+print("Collection created successfully with schema applied!")

@@ -12,3 +12,6 @@ the key points to prime you for learning, or help you study for exams!
 # By: Matias V, Meghna P, Carlos T, Hemraj P
 
 
+Keys:
+OPENAI_KEY_PROMPTS={Your OpenAI API Key}
+MONGODB_URI={Your MongoDB connection string}

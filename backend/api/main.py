@@ -12,7 +12,7 @@ logging.basicConfig(
         # format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s'
         )
 
-logger = logging.getLogger(__name__);
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
