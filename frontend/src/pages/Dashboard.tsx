@@ -1,3 +1,5 @@
+import { Container } from '@mui/material';
+import ResponsiveGrid from '../components/ResponsiveGrid';
 import React from 'react';
 
 interface Props {
@@ -9,7 +11,10 @@ const Dashboard: React.FC<Props> = () => {
 
     return (
         <div>
-            <h1>Dashboard</h1>
+            <Container maxWidth="lg">
+                <h1>Your Notes</h1>
+                <ResponsiveGrid />
+            </Container>
         </div>
     );
 };
