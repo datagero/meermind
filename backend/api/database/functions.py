@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from bson.binary import Binary
 from dotenv import load_dotenv
 from api.ai_tools.generate_data.chatagent import EmbeddingAgent
-os.getcwd()
+
 logger = logging.getLogger(__name__)
 
 # Load config from a .env file:
@@ -25,7 +25,7 @@ db = client[db_name]
 # Retrieve the transcript collection
 transcript_collection = db["transcript"]
 transcript_summary_collection = db["transcript_summary"]
-document_hash_id_collection = db['docume nt_hash_id']
+document_hash_id_collection = db['document_hash_id']
 
 def connect():
     # Create a new client and connect to the server
