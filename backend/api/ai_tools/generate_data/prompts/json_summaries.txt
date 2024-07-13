@@ -16,7 +16,7 @@ Feel free to use hierarchical bullet points to better organise information.
 
 Do not tell me about your last training cut-off in September 2021 as I already know this.
 
-Format your response in the following json structure:
+Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation.
 
 {
 "title": "",

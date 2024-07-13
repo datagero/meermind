@@ -1,0 +1,86 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["module_name", "file_name", "file_ext", "title", "oneLineSummary", "studentSummary"],
+        "properties": {
+            "module_name": {
+                "bsonType": "string",
+                "description": "Name of the module"
+            },
+            "file_name": {
+                "bsonType": "string",
+                "description": "Name of the file"
+            },
+            "file_ext": {
+                "bsonType": "string",
+                "description": "Extension of the file"
+            },
+            "title": {
+                "bsonType": "string",
+                "description": "Title of the transcript"
+            },
+            "oneLineSummary": {
+                "bsonType": "string",
+                "description": "A one-line summary of the transcript"
+            },
+            "studentSummary": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "object",
+                    "required": ["summaryTitle", "summaryPoints"],
+                    "properties": {
+                        "summaryTitle": {
+                            "bsonType": "string",
+                            "description": "Title of the student summary section"
+                        },
+                        "summaryPoints": {
+                            "bsonType": "array",
+                            "items": {
+                                "bsonType": "string",
+                                "description": "Points in the student summary section"
+                            },
+                            "description": "List of points under the student summary section"
+                        }
+                    }
+                },
+                "description": "Summary sections for students"
+            },
+            "relatedInformation": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "string"
+                },
+                "description": "Related information about the transcript"
+            },
+            "benefits": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "string"
+                },
+                "description": "Benefits mentioned in the transcript"
+            },
+            "limitations": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "string"
+                },
+                "description": "Limitations mentioned in the transcript"
+            },
+            "realWorldExample": {
+                "bsonType": "string",
+                "description": "A real-world example related to the transcript"
+            },
+            "stateOfTheArtResearch": {
+                "bsonType": "string",
+                "description": "State-of-the-art research related to the transcript"
+            },
+            "references": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "string"
+                },
+                "description": "References mentioned in the transcript"
+            }
+        }
+    }
+}
