@@ -1,6 +1,13 @@
 import os
 import json
-from ai_tools.generate_data.chatagent import ChatAgent
+from ai_tools.generate_data.chatagent import ChatAgent, EmbeddingAgent
+
+
+def search_term_in_transcript(df_embeddings, search_term):
+    agent = EmbeddingAgent()
+    agent.open_client()
+    df_similarity = agent.search_term_in_embeddings(df_embeddings, search_term)
+    return df_similarity
 
 def get_prompt_template():
     with open('backend/api/ai_tools/generate_data/prompts/json_summaries.txt', 'r') as file:
@@ -31,10 +38,6 @@ def process_transcript_path(module_name, file_name, file_ext, reprocess_failed=F
         transcript = f.read()
 
     process_transcript(transcript)
-
-
-
-
 
 if __name__ == '__main__':
     module_name = 'Meerkats'

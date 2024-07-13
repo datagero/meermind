@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 import logging 
 
 import api.database.functions as db
-# import api.ai_tools.generate_data.main as ai
+import api.ai_tools.generate_data.main as ai
+import pandas as pd
 
 logging.basicConfig(
         level=logging.DEBUG, 
@@ -37,6 +38,31 @@ def allowedFile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/search_content', methods=['POST', 'GET'])
+def searchContent():
+    if request.method == 'POST':
+        search_term = request.args['search_term']
+        cursor = db.transcript_collection.find({}, {'document_hash_id', 'embeddings'})
+        embeddings = [doc for doc in cursor]
+
+        # Create a dataframe from the cursor
+        df_embeddings = pd.DataFrame(embeddings)
+
+        # TODO search similar content
+        search_results = ai.search_term_in_transcript(df_embeddings, search_term)
+        # search_results > 0.4
+        top_result_cursor = db.transcript_summary_collection.find(
+                {'_id': search_results.iloc[0]['_id']}
+            )
+        top_result = [doc for doc in top_result_cursor]
+        # Drop _id field
+        top_result[0].pop('_id')
+        top_result_data = top_result[0]['file_data']
+
+        return "In Development:Return format to be decided"
+        # return jsonify(top_result[0])
+    else:
+        return jsonify({"status": "Search API GET Request Running"})
 
 @app.route('/upload', methods=['POST', 'GET'])
 def fileUpload():

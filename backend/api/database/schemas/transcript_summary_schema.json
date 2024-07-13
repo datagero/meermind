@@ -7,71 +7,81 @@
                 "bsonType": "string",
                 "description": "must be a string and is required"
             },
-            "title": {
+            "module_name": {
                 "bsonType": "string",
-                "description": "Title of the transcript"
+                "description": "Name of the module"
             },
-            "oneLineSummary": {
+            "file_name": {
                 "bsonType": "string",
-                "description": "A one-line summary of the transcript"
+                "description": "Name of the file"
             },
-            "studentSummary": {
-                "bsonType": "array",
-                "items": {
-                    "bsonType": "object",
-                    "required": ["summaryTitle", "summaryPoints"],
-                    "properties": {
-                        "summaryTitle": {
-                            "bsonType": "string",
-                            "description": "Title of the student summary section"
-                        },
-                        "summaryPoints": {
-                            "bsonType": "array",
-                            "items": {
+            "transcript_summary": {
+                "title": {
+                    "bsonType": "string",
+                    "description": "Title of the transcript"
+                },
+                "oneLineSummary": {
+                    "bsonType": "string",
+                    "description": "A one-line summary of the transcript"
+                },
+                "studentSummary": {
+                    "bsonType": "array",
+                    "items": {
+                        "bsonType": "object",
+                        "required": ["summaryTitle", "summaryPoints"],
+                        "properties": {
+                            "summaryTitle": {
                                 "bsonType": "string",
-                                "description": "Points in the student summary section"
+                                "description": "Title of the student summary section"
                             },
-                            "description": "List of points under the student summary section"
+                            "summaryPoints": {
+                                "bsonType": "array",
+                                "items": {
+                                    "bsonType": "string",
+                                    "description": "Points in the student summary section"
+                                },
+                                "description": "List of points under the student summary section"
+                            }
                         }
-                    }
+                    },
+                    "description": "Summary sections for students"
                 },
-                "description": "Summary sections for students"
-            },
-            "relatedInformation": {
-                "bsonType": "array",
-                "items": {
-                    "bsonType": "string"
+                "relatedInformation": {
+                    "bsonType": "array",
+                    "items": {
+                        "bsonType": "string"
+                    },
+                    "description": "Related information about the transcript"
                 },
-                "description": "Related information about the transcript"
-            },
-            "benefits": {
-                "bsonType": "array",
-                "items": {
-                    "bsonType": "string"
+                "benefits": {
+                    "bsonType": "array",
+                    "items": {
+                        "bsonType": "string"
+                    },
+                    "description": "Benefits mentioned in the transcript"
                 },
-                "description": "Benefits mentioned in the transcript"
-            },
-            "limitations": {
-                "bsonType": "array",
-                "items": {
-                    "bsonType": "string"
+                "limitations": {
+                    "bsonType": "array",
+                    "items": {
+                        "bsonType": "string"
+                    },
+                    "description": "Limitations mentioned in the transcript"
                 },
-                "description": "Limitations mentioned in the transcript"
-            },
-            "realWorldExample": {
-                "bsonType": "string",
-                "description": "A real-world example related to the transcript"
-            },
-            "stateOfTheArtResearch": {
-                "bsonType": "string",
-                "description": "State-of-the-art research related to the transcript"
-            },
-            "references": {
-                "bsonType": "array",
-                "items": {
-                    "bsonType": "string"
+                "realWorldExample": {
+                    "bsonType": "string",
+                    "description": "A real-world example related to the transcript"
                 },
-                "description": "References mentioned in the transcript"
+                "stateOfTheArtResearch": {
+                    "bsonType": "string",
+                    "description": "State-of-the-art research related to the transcript"
+                },
+                "references": {
+                    "bsonType": "array",
+                    "items": {
+                        "bsonType": "string"
+                    },
+                    "description": "References mentioned in the transcript"
+                }
             }
         }
     }

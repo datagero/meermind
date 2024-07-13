@@ -7,9 +7,24 @@
                 "bsonType": "string",
                 "description": "must be a string and is required"
             },
+            "module_name": {
+                "bsonType": "string",
+                "description": "Name of the module"
+            },
+            "file_name": {
+                "bsonType": "string",
+                "description": "Name of the file"
+            },
             "file_data": {
                 "bsonType": "binData",
                 "description": "must be binary data and is required"
+            },
+            "embeddings": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "double"
+                },
+                "description": "must be an array of doubles and is required"
             }
         }
     }

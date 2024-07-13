@@ -6,7 +6,8 @@ from bson.objectid import ObjectId
 from pymongo import MongoClient
 from bson.binary import Binary
 from dotenv import load_dotenv
-
+from api.ai_tools.generate_data.chatagent import EmbeddingAgent
+os.getcwd()
 logger = logging.getLogger(__name__)
 
 # Load config from a .env file:
@@ -24,7 +25,7 @@ db = client[db_name]
 # Retrieve the transcript collection
 transcript_collection = db["transcript"]
 transcript_summary_collection = db["transcript_summary"]
-document_hash_id_collection = db['document_hash_id']
+document_hash_id_collection = db['docume nt_hash_id']
 
 def connect():
     # Create a new client and connect to the server
@@ -34,20 +35,35 @@ def connect():
     except Exception as e:
         print(e)
 
+# Function to generate embeddings
+def generate_embeddings(text):
+    agent = EmbeddingAgent()
+    agent.open_client()
+
+    embeddings = agent.generate_embeddings(text)
+    return embeddings#.squeeze().tolist()
 
 # Function to generate document hash ID
 def generate_document_hash_id(module_name, file_name, file_ext):
     hash_input = f"{module_name}_{file_name}_{file_ext}".encode('utf-8')
-    return hashlib.sha256(hash_input).hexdigest()
+    return hashlib.md5(hash_input).hexdigest()
 
 # Function to insert file data and metadata
 def insert_transcript(module_name, file_name, file_ext, file_data):
 
     document_hash_id = generate_document_hash_id(module_name, file_name, file_ext)
     mapping_filter = {"document_hash_id": document_hash_id}
+
+    # Generate embeddings from file_data
+    text_data = file_data.decode('utf-8')  # Assuming file_data is binary text data
+    embeddings = generate_embeddings(text_data)
+
     update_data = {
         "$set": {
-            "file_data": Binary(file_data)
+            "module_name": module_name,
+            "file_name": file_name,
+            "file_data": Binary(file_data),
+            "embeddings": embeddings
         }
     }
     result = transcript_collection.update_one(mapping_filter, update_data, upsert=True)
@@ -64,7 +80,11 @@ def insert_transcript_summary(module_name, file_name, file_ext, json_data):
     document_hash_id = generate_document_hash_id(module_name, file_name, file_ext)
     mapping_filter = {"document_hash_id": document_hash_id}
     update_data = {
-        "$set": json_data
+        "$set": {
+            "module_name": module_name,
+            "file_name": file_name,
+            "transcript_summary": json_data
+        }
     }
 
     result = transcript_summary_collection.update_one(mapping_filter, update_data, upsert=True)
@@ -106,7 +126,7 @@ def careful_clean_collections():
     pass
 
 def careful_delete_collections():
-    # # # # Delete Collections
+    # # # # # Delete Collections
     # transcript_collection.drop()
     # print("Transcript collection dropped")
 
