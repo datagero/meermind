@@ -30,12 +30,12 @@ export const NotesAPI = {
 
     return response
   },
-  search: async function (name:any, cancel = false) {
+  search: async function (search_text:any, cancel = false) {
     const response = await api.request({
-      url: "/products/search",
+      url: "/search-content",
       method: "GET",
       params: {
-        name: name,
+        search_term: search_text,
       },
       signal: cancel ? cancelApiObject[this.search.name].handleRequestCancellation().signal : undefined,
     })

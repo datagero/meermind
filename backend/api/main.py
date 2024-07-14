@@ -23,7 +23,8 @@ ALLOWED_EXTENSIONS = set(['txt', 'rsp', 'rtf'])
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Downloads'))
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app,resource={r"/*": {"origins": "http://localhost:3000"}
+}, supports_credentials=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1000 * 1000  # 500 MB
 app.config['CORS_HEADER'] = 'application/json'

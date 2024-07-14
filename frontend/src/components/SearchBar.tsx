@@ -49,7 +49,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchBar(props: { notes: NoteData[] }) {
+export default function SearchBar(props: { setSearchText: React.Dispatch<any>; }) {
   const [input, setInput] = React.useState('');
   const [loading,setLoading] = React.useState<Boolean>(false);
   const navigate = useNavigate();
@@ -57,18 +57,7 @@ export default function SearchBar(props: { notes: NoteData[] }) {
   const handleSubmit = (event:any) => {
     event.preventDefault();
     // Handle the form submission logic
-    if (!input) {
-      return;
-    }
-    setLoading(true);
-    try{
-      NotesAPI.search(input).then((notes: any) => {
-        setLoading(false);
-      })
-    }catch(e){
-      console.log(e)
-    }
-
+    props.setSearchText(input)
   };
 
   return (
