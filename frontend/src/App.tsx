@@ -4,6 +4,7 @@ import './App.css';
 import Dashboard from './pages/Dashboard';
 import Upload from './pages/Upload';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
+import NotePage from './pages/NotePage';
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
         <Routes>
          <Route path="/" element={<Dashboard/>} />
         <Route path="/upload" element={<Upload/>} />
+        <Route path="note/:id" element={<NotePage />}
+        />
        </Routes>
     </React.Fragment>
   );

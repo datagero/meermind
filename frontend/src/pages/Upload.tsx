@@ -35,9 +35,10 @@ const Upload: React.FC = () => {
     }
     setLoading(true);
     try{
-      NotesAPI.create(file).then((notes: any) => {
+      NotesAPI.create(file).then((response) => {
+        console.log("HASH ID",response);
         setLoading(false);
-        navigate('/')
+        navigate(`/note/${response}`);
       })
     }catch(e){
       console.log(e)

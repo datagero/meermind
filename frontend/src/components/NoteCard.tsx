@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 // Import the 'Note' type from the correct file path
 import { Note } from '../types/Note'
+import { useNavigate } from 'react-router-dom';
 
 const bull = (
   <Box
@@ -18,7 +19,10 @@ const bull = (
 );
 
 
-export default function NoteCard({ note }: { note: Note }) {
+export default function NoteCard(props: any) {
+  const navigate = useNavigate();
+  const note: Note = props.note;
+  const id: string = props.id;
   return (
     <Box sx={{ minWidth: 275 }}>
       <Card variant="outlined" sx={{ height: 300}}>
@@ -36,7 +40,7 @@ export default function NoteCard({ note }: { note: Note }) {
             </Typography> */}
         </CardContent>
         <CardActions>
-            <Button size="small">Learn More</Button>
+            <Button size="small" onClick={() => navigate(`note/${id}`)}>Learn More</Button>
         </CardActions>
       </Card>
     </Box>

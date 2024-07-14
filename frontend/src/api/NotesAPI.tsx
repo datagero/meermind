@@ -22,31 +22,31 @@ export const NotesAPI = {
 
     return response
   },
-//   search: async function (name, cancel = false) {
-//     const response = await api.request({
-//       url: "/products/search",
-//       method: "GET",
-//       params: {
-//         name: name,
-//       },
-//       signal: cancel ? cancelApiObject[this.search.name].handleRequestCancellation().signal : undefined,
-//     })
+  getNote: async function (id: string, cancel = false) {
+    const response = await api.request({
+      url: "/get-note/"+id,
+      method: "GET",
+    })
 
-//     return response.data.products
-//   },
+    return response
+  },
   create: async function (transcript : File, cancel = false) {
 
     let bodyFormData = new FormData();
     bodyFormData.append('files', transcript);
     bodyFormData.append('module_name', transcript.name);
 
+    let hash_id = ""
     await api.request({
       url: `/upload`,
       method: "POST",
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data" },
       signal: cancel ? cancelApiObject[this.create.name].handleRequestCancellation().signal : undefined,
+    }).then((response) => {
+      hash_id =  response.data.id
     })
+    return hash_id
   },
 }
 

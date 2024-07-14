@@ -1,4 +1,4 @@
-interface StudentSummary {
+export interface StudentSummary {
     "summaryTitle": string,
     "summaryPoints": string[]
 }
