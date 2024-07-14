@@ -1,6 +1,6 @@
 import os
 import json
-from ai_tools.generate_data.chatagent import ChatAgent, EmbeddingAgent
+from api.ai_tools.generate_data.chatagent import ChatAgent, EmbeddingAgent
 
 
 def search_term_in_transcript(df_embeddings, search_term):

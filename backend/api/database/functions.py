@@ -102,12 +102,16 @@ def insert_transcript_summary(module_name, file_name, file_ext, json_data):
             "file_ext": file_ext
         }
     }
-    result = document_hash_id_collection.update_one(mapping_filter, mapping_update, upsert=True)
+    mapping_result = document_hash_id_collection.update_one(mapping_filter, mapping_update, upsert=True)
 
-    if result.upserted_id:
-        print(f"Inserted summary document for file {module_name}:{file_name}{file_ext}")
+    if mapping_result.upserted_id:
+        logger.debug(f"Inserted summary document for file {module_name}:{file_name}{file_ext}")
     else:
-        print(f"Updated summary document for file {module_name}:{file_name}{file_ext}")
+        logger.debug(f"Updated summary document for file {module_name}:{file_name}{file_ext}")
+
+    logger.debug(f"norm upserted id: {result.upserted_id}")
+
+    return result.upserted_id
 
 def clean_collection(connection_string, db_name, collection_name):
     # Connect to MongoDB Atlas
@@ -137,16 +141,25 @@ def careful_delete_collections():
     # print("Mapping collection dropped")
     pass
 
-def get_all_transcripts():
-    documents = transcript_collection.find({}, {'_id': 0})
-    return list(documents)
+def get_transcript(hash):
+    result = transcript_collection.find({"document_hash_id":hash}, {'_id': 0})
+    return result
 
 def get_all_summaries():
-    documents = transcript_summary_collection.find({}, {'_id': 0})
-    return list(documents)
+    results = transcript_summary_collection.find({}, {'_id': 0})
+    return list(results)
 
-def get_summary(pk):
-    document = transcript_summary_collection.find({"_id":pk})
-    return list(document)
+def get_summary(hash):
+    result = transcript_summary_collection.find_one({"document_hash_id":hash},{'_id': 0})
+    return result
 
+def update_summary(hash, new_data):
+    result = transcript_summary_collection.update_one(
+        {"document_hash_id": hash},
+        {"$set": new_data}
+    )
+    return result.modified_count > 0
 
+def delete_summary(hash):
+    result = transcript_summary_collection.delete_one({"document_hash_id": hash})
+    return result.deleted_count > 0

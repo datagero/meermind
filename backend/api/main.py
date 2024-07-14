@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 import logging 
 
 import api.database.functions as db
-import api.ai_tools.generate_data.main as ai
+# import api.ai_tools.generate_data.main as ai
+
 import pandas as pd
 
 logging.basicConfig(
@@ -38,31 +39,6 @@ def allowedFile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/search_content', methods=['POST', 'GET'])
-def searchContent():
-    if request.method == 'POST':
-        search_term = request.args['search_term']
-        cursor = db.transcript_collection.find({}, {'document_hash_id', 'embeddings'})
-        embeddings = [doc for doc in cursor]
-
-        # Create a dataframe from the cursor
-        df_embeddings = pd.DataFrame(embeddings)
-
-        # TODO search similar content
-        search_results = ai.search_term_in_transcript(df_embeddings, search_term)
-        # search_results > 0.4
-        top_result_cursor = db.transcript_summary_collection.find(
-                {'_id': search_results.iloc[0]['_id']}
-            )
-        top_result = [doc for doc in top_result_cursor]
-        # Drop _id field
-        top_result[0].pop('_id')
-        top_result_data = top_result[0]['file_data']
-
-        return "In Development:Return format to be decided"
-        # return jsonify(top_result[0])
-    else:
-        return jsonify({"status": "Search API GET Request Running"})
 
 @app.route('/upload', methods=['POST', 'GET'])
 def fileUpload():
@@ -74,15 +50,11 @@ def fileUpload():
                 filename = secure_filename(file.filename)
 
                 if allowedFile(filename):
-                    # TODO add file to db
-                    # db.save(transcript_file)
-
                     name, file_ext = os.path.splitext(filename)
                     module_name='meermind' # FIX delete this later
                     file_data = file.read()
-                    db.insert_transcript(module_name, name, file_ext, file_data)
 
-                    # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    db.insert_transcript(module_name, name, file_ext, file_data)
 
                     # Start to openai-api service
                     # formatted_response = ai.process_transcript(file_data.decode('utf-8'))
@@ -98,13 +70,14 @@ def fileUpload():
                         print(f"Problematic JSON snippet: {formatted_response[e.pos - 10:e.pos + 10]}")
                         raise e
 
-                    # TODO save the formatted reponse 
+                    # save the formatted reponse 
                     db.insert_transcript_summary(module_name, name, file_ext, data)
+                    file_id = 0
 
                 else:
                     return jsonify({'message': 'File type not allowed'}), 400
 
-        return jsonify({"name": filename, "status": "success"})
+        return jsonify({"id": file_id, "status": "success"})
     else:
         return jsonify({"status": "Upload API GET Request Running"})
 
@@ -113,40 +86,60 @@ def fileUpload():
 def get_summaries():
     # get objects from the mongodb 
     summaries = db.get_all_summaries()
-    # any processing before sending (?)
 
     # send data to frontend
     return jsonify(summaries);
 
-@app.route('/get-transcript/<int:hash>', methods=['GET'])
+@app.route('/get-transcript/<hash>', methods=['GET'])
 def get_transcript(hash):
     # get objects from the mongodb 
     transcript = db.get_transcript(hash)
-    # any processing before sending (?)
 
     # send data to frontend
     return jsonify(transcript);
 
-@app.route('/get-note/<int:document_hash_id>', methods=['GET','POST'])
-def get_summary(document_hash_id):
-    # get objects from the mongodb 
-    results = db.get_summary(document_hash_id)
-    # any processing before sending (?)
-    
-    # send data to frontend
-    return jsonify({"results":results});
+@app.route('/get-note/<hash>/update', methods=['POST'])
+def update_summary(hash):
+    if request.method == 'POST':
+        # Get new data from the request body
+        new_data = request.json
+        
+        # Update the document in MongoDB
+        success = db.update_summary(hash, new_data)
+        
+        if success:
+            return jsonify({"status": "Update successful"}), 200
+        else:
+            return jsonify({"status": "Update failed or no document found"}), 404
+    else:
+        return jsonify({"status": "Invalid request method"}), 405
 
-@app.route('/get-note/<int:pk>/update', methods=['GET','POST'])
-def update_transcript(pk):
-    # change the summaries information 
 
-    return jsonify({"results":results});
+@app.route('/get-note/<hash>/delete', methods=['POST'])
+def delete_summary_route(hash):
+    if request.method == 'POST':
+        success = db.delete_summary(hash)
+        if success:
+            return jsonify({"status": "delete successful"}), 200
+        else:
+            return jsonify({"status": "delete failed or no document found"}), 404
+    else:
+        return jsonify({"status": "Invalid request method"}), 405
 
-@app.route('/get-note/<int:pk>/delete', methods=['GET','POST'])
-def delete_transcripts(pk):
-    # delete the summary
 
-    return jsonify({"results":results});
+@app.route('/get-note/<hash>', methods=['GET'])
+def get_summary(hash):
+    if request.method == 'GET':
+        # get objects from the mongodb 
+        logger.debug(f"hash: {hash}");
+        result = db.get_summary(hash)
+
+        # send data to frontend
+        return jsonify(result), 200 
+    else:
+        return jsonify({"status":"POST request"}), 200
+
+
 
 
 if __name__ == '__main__':
