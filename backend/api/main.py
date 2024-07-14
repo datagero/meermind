@@ -5,8 +5,13 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import logging 
 
-import database.functions as db
+import api.database.functions as db
+<<<<<<< Updated upstream
 import ai_tools.generate_data.main as ai
+=======
+import api.ai_tools.generate_data.main as ai
+>>>>>>> Stashed changes
+
 import pandas as pd
 
 logging.basicConfig(
@@ -66,6 +71,8 @@ def searchContent():
     else:
         return jsonify({"status": "Search API GET Request Running"})
 
+
+
 @app.route('/upload', methods=['POST', 'GET'])
 def fileUpload():
     if request.method == 'POST':
@@ -97,13 +104,16 @@ def fileUpload():
                         raise e
 
                     # save the formatted reponse 
-                    file_id = db.insert_transcript_summary(module_name, name, file_ext, data)
-                    print(file_id)
+                    hash_id = db.insert_transcript_summary(module_name, name, file_ext, data)
+<<<<<<< Updated upstream
+                    print(hash_id)
+=======
+>>>>>>> Stashed changes
 
                 else:
                     return jsonify({'message': 'File type not allowed'}), 400
 
-        return jsonify({"id": file_id, "status": "success"})
+        return jsonify({"id": hash_id, "status": "success"})
     else:
         return jsonify({"status": "Upload API GET Request Running"})
 
@@ -164,8 +174,6 @@ def get_summary(hash):
         return jsonify(result), 200 
     else:
         return jsonify({"status":"POST request"}), 200
-
-
 
 
 if __name__ == '__main__':

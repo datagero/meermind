@@ -6,7 +6,8 @@ from bson.objectid import ObjectId
 from pymongo import MongoClient
 from bson.binary import Binary
 from dotenv import load_dotenv
-from ai_tools.generate_data.chatagent import EmbeddingAgent
+
+from api.ai_tools.generate_data.chatagent import EmbeddingAgent
 
 logger = logging.getLogger(__name__)
 
@@ -102,16 +103,14 @@ def insert_transcript_summary(module_name, file_name, file_ext, json_data):
             "file_ext": file_ext
         }
     }
-    mapping_result = document_hash_id_collection.update_one(mapping_filter, mapping_update, upsert=True)
+    result = document_hash_id_collection.update_one(mapping_filter, mapping_update, upsert=True)
 
-    if mapping_result.upserted_id:
-        logger.debug(f"Inserted summary document for file {module_name}:{file_name}{file_ext}")
+    if result.upserted_id:
+        print(f"Inserted summary document for file {module_name}:{file_name}{file_ext}")
     else:
-        logger.debug(f"Updated summary document for file {module_name}:{file_name}{file_ext}")
+        print(f"Updated summary document for file {module_name}:{file_name}{file_ext}")
 
-    logger.debug(f"norm upserted id: {result.upserted_id}")
-
-    return result.upserted_id
+    return document_hash_id
 
 def clean_collection(connection_string, db_name, collection_name):
     # Connect to MongoDB Atlas
