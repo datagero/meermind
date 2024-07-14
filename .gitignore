@@ -4,3 +4,5 @@
 .vscode
 
 node_modules
+data/legacy/*
+backend/tmp_process_legacy_data.py

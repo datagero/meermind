@@ -10,7 +10,6 @@ def search_term_in_transcript(df_embeddings, search_term):
     return df_similarity
 
 def get_prompt_template():
-    print(os.getcwd())
     with open('ai_tools/generate_data/prompts/json_summaries.txt', 'r') as file:
         prompt_template = file.read()
     return prompt_template

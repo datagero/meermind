@@ -43,7 +43,7 @@ class EmbeddingAgent(GPTAgent):
         embeddings = response.data[0].embedding
         return embeddings
 
-    def search_term_in_embeddings(self, df, search_term, n=3, pprint=True):
+    def search_term_in_embeddings(self, df, search_term, n=None, pprint=True):
         if not self.client:
             raise Exception("Client not initialized. Call open_client first.")
 
@@ -55,7 +55,9 @@ class EmbeddingAgent(GPTAgent):
 
         df['similarities'] = df.embeddings.apply(lambda x: self.cosine_similarity(x, search_term_embedding))
 
-        res = df.sort_values('similarities', ascending=False).head(n)
+        res = df.sort_values('similarities', ascending=False)
+        if n:
+            res = res.head(n)
         return res
 
 class ChatAgent(GPTAgent):

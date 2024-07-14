@@ -6,12 +6,7 @@ from dotenv import load_dotenv
 import logging 
 
 import api.database.functions as db
-<<<<<<< Updated upstream
-import ai_tools.generate_data.main as ai
-=======
 import api.ai_tools.generate_data.main as ai
->>>>>>> Stashed changes
-
 import pandas as pd
 
 logging.basicConfig(
@@ -51,20 +46,24 @@ def searchContent():
         search_term = request.args['search_term']
         cursor = db.transcript_collection.find({}, {'document_hash_id', 'embeddings'})
         embeddings = [doc for doc in cursor]
-
+        search_term = 'A regression is able to predict future values based on past data'
         # Create a dataframe from the cursor
         df_embeddings = pd.DataFrame(embeddings)
 
         # TODO search similar content
         search_results = ai.search_term_in_transcript(df_embeddings, search_term)
-        # search_results > 0.4
+        # Filter on similarity threshold
+        filtered_results = search_results[search_results['similarities'] > 0.4]
+        hash_ids=filtered_results['document_hash_id'].tolist()
+
         top_result_cursor = db.transcript_summary_collection.find(
-                {'_id': search_results.iloc[0]['_id']}
+                {'document_hash_id': {'$in': hash_ids}}
             )
-        top_result = [doc for doc in top_result_cursor]
+
+        top_results = [doc for doc in top_result_cursor]
         # Drop _id field
-        top_result[0].pop('_id')
-        top_result_data = top_result[0]['file_data']
+        # top_result[0].pop('_id')
+        # top_result_data = top_result[0]['file_data']
 
         return "In Development:Return format to be decided"
         # return jsonify(top_result[0])
@@ -77,14 +76,14 @@ def searchContent():
 def fileUpload():
     if request.method == 'POST':
         files = request.files.getlist('files')
-        module_name = request.form.get("module_name")
+        module_name = request.args.get("module_name")
         for file in files:
             if file.filename is not None:
                 filename = secure_filename(file.filename)
 
                 if allowedFile(filename):
                     name, file_ext = os.path.splitext(filename)
-                    module_name='meermind' # FIX delete this later
+                    # module_name='meermind' # FIX delete this later
                     file_data = file.read()
 
                     db.insert_transcript(module_name, name, file_ext, file_data)
@@ -105,10 +104,6 @@ def fileUpload():
 
                     # save the formatted reponse 
                     hash_id = db.insert_transcript_summary(module_name, name, file_ext, data)
-<<<<<<< Updated upstream
-                    print(hash_id)
-=======
->>>>>>> Stashed changes
 
                 else:
                     return jsonify({'message': 'File type not allowed'}), 400
