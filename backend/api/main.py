@@ -45,7 +45,7 @@ def searchContent():
     if request.method == 'POST':
         search_term = request.args['search_term']
         # search_term = 'A regression is able to predict future values based on past data'
-        search_term = 'What is an indicator variable? How does it relates to regression?'
+        # search_term = 'What is an indicator variable? How does it relates to regression?'
         cursor = db.transcript_collection.find({}, {'document_hash_id', 'embeddings'})
         embeddings = [doc for doc in cursor]
         # Create a dataframe from the cursor
@@ -54,8 +54,10 @@ def searchContent():
         # TODO search similar content
         search_results = ai.search_term_in_transcript(df_embeddings, search_term)
         # Filter on similarity threshold
-        filtered_results = search_results[search_results['similarities'] > 0.4]
+        filtered_results = search_results[search_results['similarities'] > 0.2]
         hash_ids=filtered_results['document_hash_id'].tolist()
+
+        filtered_results[['document_hash_id', 'similarities']]
 
         top_result_cursor = db.transcript_summary_collection.find(
                 {'document_hash_id': {'$in': hash_ids}}, 
