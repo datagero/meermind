@@ -5,6 +5,7 @@ import { Button, Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { NotesAPI } from '../api/NotesAPI';
+import Paper from '@mui/material/Paper';
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -46,8 +47,10 @@ const Upload: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5 }}>
-      <Typography variant="h4">Upload File</Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5 , p: 3}}>
+      <Paper elevation={3} sx={{ p: 3 , alignItems: 'center', justifyContent: 'center'}}>
+      <Typography variant="h4">Upload Your Transcript</Typography>
+      <br />
       <Button
       component="label"
       role={undefined}
@@ -58,11 +61,14 @@ const Upload: React.FC = () => {
       Upload file
       <VisuallyHiddenInput type="file" onChange={handleFileChange}/>
     </Button>
-    <h2>{file?.name}</h2>
+    <br />
+   { file && <Typography variant="body1" sx={{ mt: 2 }}>uploaded file: {file?.name}</Typography>}
+   <br />
     <Button type="submit" variant="contained" onClick={handleUpload}>
        Submit Transcript
       </Button>
       <h2>{loading&&'is Loading'}</h2>
+      </Paper>
     </Box>
   );
 };

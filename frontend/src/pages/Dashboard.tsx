@@ -33,8 +33,8 @@ const Dashboard: React.FC<Props> = () => {
     }
     else {
       NotesAPI.search(searchText).then((notes: any) => {
+        console.log(notes)
         const filteredNotes: NoteData[] = notes.data.map((note: any) => ({
-
           transcript_summary: note.transcript_summary,
           id: note.document_hash_id
         }));

@@ -30,17 +30,18 @@ export const NotesAPI = {
 
     return response
   },
+  
   search: async function (search_text:any, cancel = false) {
     const response = await api.request({
-      url: "/search-content",
-      method: "GET",
-      params: {
-        search_term: search_text,
+      url: "/search_content",
+      method: "POST",
+      params:{
+        search_term: search_text
       },
       signal: cancel ? cancelApiObject[this.search.name].handleRequestCancellation().signal : undefined,
     })
 
-    return response.data.products
+    return response
   },
   create: async function (transcript : File, cancel = false) {
 
