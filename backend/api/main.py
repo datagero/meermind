@@ -6,8 +6,7 @@ from dotenv import load_dotenv
 import logging 
 
 import api.database.functions as db
-import api.ai_tools.generate_data.main as ai
-
+import api.ai_tools.main as ai
 import pandas as pd
 
 logging.basicConfig(
@@ -32,7 +31,6 @@ app.config['CORS_HEADER'] = 'application/json'
 # Debug is on
 if os.environ.get("DEBUG") is not None:
     logger.debug(f' msg --> DEBUG is set {os.environ.get("DEBUG")}')
-    # logger.debug(f'URI: {os.environ.get("DB_CONNECTION_CONNECTION_STRING")}')
 
 @app.route('/', methods=['GET'])
 def home():
@@ -46,9 +44,10 @@ def allowedFile(filename):
 def searchContent():
     if request.method == 'POST':
         search_term = request.args['search_term']
+        # search_term = 'A regression is able to predict future values based on past data'
+        search_term = 'What is an indicator variable? How does it relates to regression?'
         cursor = db.transcript_collection.find({}, {'document_hash_id', 'embeddings'})
         embeddings = [doc for doc in cursor]
-        search_term = 'A regression is able to predict future values based on past data'
         # Create a dataframe from the cursor
         df_embeddings = pd.DataFrame(embeddings)
 
@@ -59,20 +58,16 @@ def searchContent():
         hash_ids=filtered_results['document_hash_id'].tolist()
 
         top_result_cursor = db.transcript_summary_collection.find(
-                {'document_hash_id': {'$in': hash_ids}}
+                {'document_hash_id': {'$in': hash_ids}}, 
+                {'_id': 0}
             )
-
+        
+        # Get Top Results and sort them by similarity
         top_results = [doc for doc in top_result_cursor]
-        # Drop _id field
-        # top_result[0].pop('_id')
-        # top_result_data = top_result[0]['file_data']
-
-        return "In Development:Return format to be decided"
-        # return jsonify(top_result[0])
+        top_results = sorted(top_results, key=lambda x: hash_ids.index(x['document_hash_id']))
+        return jsonify(top_results)
     else:
         return jsonify({"status": "Search API GET Request Running"})
-
-
 
 @app.route('/upload', methods=['POST', 'GET'])
 def fileUpload():
@@ -101,7 +96,7 @@ def fileUpload():
                     except json.JSONDecodeError as e:
                         # formatted_response_clean = formatted_response.replace('\\n', '\n').replace('\\', '')
                         print(f"JSON decoding error: {e.msg} at line {e.lineno} column {e.colno}")
-                        print(f"Problematic JSON snippet: {formatted_response[e.pos - 10:e.pos + 10]}")
+                        print(f"Problematic JSON snippet: {formatted_response[e.pos - 10:e.pos + 10]}. Please try re-uploading the Document.")
                         raise e
 
                     # save the formatted reponse 
@@ -172,7 +167,6 @@ def get_summary(hash):
         return jsonify(result), 200 
     else:
         return jsonify({"status":"POST request"}), 200
-
 
 if __name__ == '__main__':
    app.run(port=5000)

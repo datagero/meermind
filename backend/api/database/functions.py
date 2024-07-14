@@ -1,13 +1,11 @@
 import os
 import logging
-import json
 import hashlib
-from bson.objectid import ObjectId
 from pymongo import MongoClient
 from bson.binary import Binary
 from dotenv import load_dotenv
 
-from api.ai_tools.generate_data.chatagent import EmbeddingAgent
+from api.ai_tools.gptagent import EmbeddingAgent
 
 logger = logging.getLogger(__name__)
 
@@ -123,12 +121,20 @@ def clean_collection(connection_string, db_name, collection_name):
     print(f"Deleted {result.deleted_count} documents from the {collection_name} collection.")
 
 def careful_clean_collections():
+    """
+    Helper function to clean collections in the database.
+    Careful: This function will delete all documents in the collections.
+    """
     # # # Clean Collections
     # # clean_collection(connection_string, db_name, "transcript")
     # # clean_collection(connection_string, db_name, "transcript_summary")
     pass
 
 def careful_delete_collections():
+    """
+    Helper function to delete collections in the database.
+    Careful: This function will delete the collections.
+    """
     # # # # # Delete Collections
     # transcript_collection.drop()
     # print("Transcript collection dropped")

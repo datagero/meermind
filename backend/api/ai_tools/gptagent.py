@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from colorama import Fore, Style
 
 class GPTAgent:
+    """
+    This class is used to interact with the OpenAI API.
+    """
     def __init__(self):
         self.client = None
 
@@ -21,10 +24,13 @@ class GPTAgent:
         return self.client
 
 class EmbeddingAgent(GPTAgent):
-    # Function to generate embeddings using GPT
-
-    # Function to compute cosine similarity
+    """
+    This class is used to generate embeddings using the OpenAI API.
+    """
     def cosine_similarity(self, vec1, vec2):
+        """
+        Compute the cosine similarity between two vectors.
+        """
         vec1 = np.array(vec1)
         vec2 = np.array(vec2)
         dot_product = np.dot(vec1, vec2)
@@ -33,17 +39,23 @@ class EmbeddingAgent(GPTAgent):
         return dot_product / (norm_vec1 * norm_vec2)
 
     def generate_embeddings(self, text, model='text-embedding-3-large'):
+        """
+        Generate embeddings for a given text using the OpenAI API.
+        """
         if not self.client:
             raise Exception("Client not initialized. Call open_client first.")
         
         response = self.client.embeddings.create(
-            model=model,  # Specify the embedding model
+            model=model,
             input=text
         )
         embeddings = response.data[0].embedding
         return embeddings
 
     def search_term_in_embeddings(self, df, search_term, n=None, pprint=True):
+        """
+        Search for a term in a dataframe of embeddings.
+        """
         if not self.client:
             raise Exception("Client not initialized. Call open_client first.")
 
@@ -66,7 +78,9 @@ class ChatAgent(GPTAgent):
         self.thread = None
 
     def process_chat(self, user_input, file_ids=None):
-        # user_input = 'Say hi to me'
+        """
+        Process a chat message using the OpenAI API.
+        """
         # Check if client is initialized
         if not self.client:
             raise Exception("Client not initialized. Call open_client first.")
@@ -83,6 +97,9 @@ class ChatAgent(GPTAgent):
         return completion.choices[0].message
 
     def open_thread(self):
+        """
+        Open a new chat thread using the OpenAI API.
+        """
         if not self.client:
             raise Exception("Client not initialized. Call open_client first.")
         

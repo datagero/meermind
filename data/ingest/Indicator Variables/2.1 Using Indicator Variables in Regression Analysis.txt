@@ -1,0 +1,49 @@
+Hi, I'm Professor Sridhar Narasimhan of the Scheller College of Business
+at Georgia Tech.
+In this module, we are going to understand how indicator or
+dummy variables are used in regression analysis.
+Note, that I'll be using the terms indicator variables and
+dummy variables, interchangeably, both mean the same thing.
+This module is part of this course on data analytics and business.
+There are five lessons in this module.
+In the first lesson,
+we will introduce a Customer Analytics Dataset.
+In the second lesson, we'll see how indicator or
+dummy variables are created and used in a regression model.
+In the third lesson, we will interpret the coefficients of indicator variables.
+In the fourth lesson, we'll see how interaction terms are used and
+how do we interpret the coefficient of interaction terms.
+And the final lesson is another example to using indicator variables in regression.
+So we're going to use a data set that is from a direct marketing company.
+So a direct marketing firm has a data set containing information on past
+customer behavior actually the amount spent on buying products.
+And this is a simulated data set which mimics data from a direct
+marketing company.
+We are interested in knowing which customer characteristics can predict
+AmountSpent, that is the amount our customer spends on buying products.
+To answer questions like this, we introduce indicator variables and
+interaction terms and try to understand their interpretation in regression models.
+So the direct marketing data set has these variables
+starting with age, gender and going on to does the customer own a home or not?
+Is she or he married, location, salary, number of children,
+the type of customer, the number of catalogs sent to this customer and
+then AmountSpent, the amount of purchases made by this customer.
+So the first few records look like shown here,
+and I show this in a table in the next slide.
+So this is the structure of the data set, and
+the first ten rows of this dataframe look as follows.
+So let's explore this dataframe a bit further.
+We'd like to understand why some individuals spend more than others.
+In particular, we'd like to investigate whether salary
+has an influence on AmountSpent.
+So how do we get started?
+So to keep matters clear, we start with AmountSpent and Salary and
+just pick those two variables for the initial analysis.
+So we'll do a scatterplot, plot Salary on the x axis and
+AmountSpent on the y axis, and we get this scatterplot.
+And then we do a simple regression model of AmountSpent
+against Salary, and this is the values we get.
+And this is scatterplot with the regression line.
+So we've introduced custom analytics data set in this lesson to illustrate
+indicator variables.
+[SOUND]
