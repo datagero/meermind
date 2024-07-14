@@ -1,12 +1,12 @@
 import os, json
 from flask import Flask, flash, request, redirect, url_for, jsonify
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import logging 
 
-import api.database.functions as db
-# import api.ai_tools.generate_data.main as ai
-
+import database.functions as db
+import ai_tools.generate_data.main as ai
 import pandas as pd
 
 logging.basicConfig(
@@ -22,6 +22,7 @@ ALLOWED_EXTENSIONS = set(['txt', 'rsp', 'rtf'])
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Downloads'))
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1000 * 1000  # 500 MB
 app.config['CORS_HEADER'] = 'application/json'
@@ -39,6 +40,31 @@ def allowedFile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/search_content', methods=['POST', 'GET'])
+def searchContent():
+    if request.method == 'POST':
+        search_term = request.args['search_term']
+        cursor = db.transcript_collection.find({}, {'document_hash_id', 'embeddings'})
+        embeddings = [doc for doc in cursor]
+
+        # Create a dataframe from the cursor
+        df_embeddings = pd.DataFrame(embeddings)
+
+        # TODO search similar content
+        search_results = ai.search_term_in_transcript(df_embeddings, search_term)
+        # search_results > 0.4
+        top_result_cursor = db.transcript_summary_collection.find(
+                {'_id': search_results.iloc[0]['_id']}
+            )
+        top_result = [doc for doc in top_result_cursor]
+        # Drop _id field
+        top_result[0].pop('_id')
+        top_result_data = top_result[0]['file_data']
+
+        return "In Development:Return format to be decided"
+        # return jsonify(top_result[0])
+    else:
+        return jsonify({"status": "Search API GET Request Running"})
 
 @app.route('/upload', methods=['POST', 'GET'])
 def fileUpload():
@@ -57,9 +83,9 @@ def fileUpload():
                     db.insert_transcript(module_name, name, file_ext, file_data)
 
                     # Start to openai-api service
-                    # formatted_response = ai.process_transcript(file_data.decode('utf-8'))
+                    formatted_response = ai.process_transcript(file_data.decode('utf-8'))
                     # For Testing -> To avoid using the API, we can use the following:
-                    formatted_response = '{\n"title": "Fascinating Facts about Meerkats",\n"oneLineSummary": "Discussion of interesting facts about meerkats, including their unique markings, social behavior, and diet.",\n"studentSummary": [\n{\n"summaryTitle": "Interesting Facts about Meerkats",\n"summaryPoints": [\n"The dark markings under their eyes act like sunglasses, allowing them to see in harsh desert light.",\n"Meerkats stand guard to protect the group from predators like eagles and jackals.",\n"They live in social groups called mobs, ranging from five to thirty members.",\n"Meerkats are fiercely territorial and will defend their territory from threats like snakes.",\n"They use their claws to dig burrows and tunnels where they sleep.",\n"Meerkats belong to the Mongoose family and enjoy wrestling as a form of play.",\n"They have a diverse diet, including scorpions, beetles, spiders, lizards, and small rodents."\n]\n}\n],\n"relatedInformation": [],\n"benefits": [],\n"limitations": [],\n"realWorldExample": "",\n"stateOfTheArtResearch": "",\n"references": []\n}'
+                    # formatted_response = '{\n"title": "Fascinating Facts about Meerkats",\n"oneLineSummary": "Discussion of interesting facts about meerkats, including their unique markings, social behavior, and diet.",\n"studentSummary": [\n{\n"summaryTitle": "Interesting Facts about Meerkats",\n"summaryPoints": [\n"The dark markings under their eyes act like sunglasses, allowing them to see in harsh desert light.",\n"Meerkats stand guard to protect the group from predators like eagles and jackals.",\n"They live in social groups called mobs, ranging from five to thirty members.",\n"Meerkats are fiercely territorial and will defend their territory from threats like snakes.",\n"They use their claws to dig burrows and tunnels where they sleep.",\n"Meerkats belong to the Mongoose family and enjoy wrestling as a form of play.",\n"They have a diverse diet, including scorpions, beetles, spiders, lizards, and small rodents."\n]\n}\n],\n"relatedInformation": [],\n"benefits": [],\n"limitations": [],\n"realWorldExample": "",\n"stateOfTheArtResearch": "",\n"references": []\n}'
 
                     # Might need this to debug JSON formatting issues - There will be some other issues... let's try to document them.
                     try:
@@ -71,8 +97,8 @@ def fileUpload():
                         raise e
 
                     # save the formatted reponse 
-                    db.insert_transcript_summary(module_name, name, file_ext, data)
-                    file_id = 0
+                    file_id = db.insert_transcript_summary(module_name, name, file_ext, data)
+                    print(file_id)
 
                 else:
                     return jsonify({'message': 'File type not allowed'}), 400

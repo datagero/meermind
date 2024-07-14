@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
+    "module": "es2022",
     "lib": [
       "dom",
       "dom.iterable",

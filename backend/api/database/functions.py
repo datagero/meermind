@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 from pymongo import MongoClient
 from bson.binary import Binary
 from dotenv import load_dotenv
-from api.ai_tools.generate_data.chatagent import EmbeddingAgent
+from ai_tools.generate_data.chatagent import EmbeddingAgent
 
 logger = logging.getLogger(__name__)
 
