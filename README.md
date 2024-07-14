@@ -1,17 +1,41 @@
 
-# MeerMind
-A Collaborative Note Transcription service for students. The MeerMind team
-wants to solve the problem with handling notes for async students. 
+# Meermind Project Overview 🚀
 
-Our mission is to make it easy for async students to get notes of lectures.
+Welcome to Meermind, an innovative tool designed to help students and professionals manage information overload and improve collaboration. This project aims to make learning more efficient, increase productivity, and enhance the retention of important information by creating study aids from video transcripts, with a roadmap to enable PDF documents, video, and other formats.
 
-MeerMind takes a transcription of your video lecture, and creates a summary of
-the key points to prime you for learning, or help you study for exams! 
+Students struggle with disorganized and time-consuming note-taking, making it hard to collaborate and revisit information. Meermind provides a consistent, AI-powered solution to streamline note-taking, improve information retrieval, and enhance study efficiency.
+
+## Repository Overview 
+This document provides a high-level overview of the entire project structure, including key directories and components. It serves as a guide to understanding the layout and functionality of the codebase.
+
+## Data Directory 📊
+The `data/` directory contains sample data and initial datasets used for getting started with understanding the Meermind application. Normally, you would upload files through the UI and these will get persisted in your MongoDB.
+
+## Frontend Directory 💻
+
+### Overview
+The `frontend/` directory contains the React-based user interface for the Meermind application. It manages the client-side code, providing an interactive and user-friendly experience.
+
+
+Refer to `frontend/README.md` for detailed information about setting up and running the frontend.
+
+## Backend Directory 🧩
+
+### Overview
+The `backend/` directory contains configuration files, dependencies, and scripts for setting up and running the backend application.
+
+Refer to `backend/README.md` for detailed information about setting up and running the backend.
+
+## Setup Instructions ⚙️
+
+Follow the specific instructions for the backend/ and frontend/ directories. 
+
+1. **Environment Variables:**
+   Ensure you have an `.env` file in the project root folder with the following content:
+   ```sh
+   OPENAI_KEY_PROMPTS={Your OpenAI API Key}
+   MONGODB_URI={Your MongoDB connection string}
+   ```
 
 
 # By: Matias V, Meghna P, Carlos T, Hemraj P
-
-
-Keys:
-OPENAI_KEY_PROMPTS={Your OpenAI API Key}
-MONGODB_URI={Your MongoDB connection string}
