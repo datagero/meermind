@@ -1,0 +1,62 @@
+In this lesson, we're going to introduce a real estate data set that
+we will use extensively iIn this lesson. Assume that you need to sell your house,
+you want to predict the listing price based on how
+other houses are listed in the market. How would you approach this task?
+[BLANK_AUDIO]
+A typical approach is to ask realtors. And realtors often will use comparable.
+That's recent sales of houses in your neighborhood,
+usually three to five houses and somehow come up with a suggested sale price.
+However, you want to be more analytical in your approach.
+You have access to recent actual home sales in your city.
+You'd like to know what are the impacts of factors such as lot size,
+number of bedrooms, number of bathrooms, ec on the price. Could you
+use linear regression to help you get a better estimate of the listing price?
+[BLANK_AUDIO]
+Conveniently for us, there is a dataset in the R package Ecdat.
+This dataset has a cross section of 546 home
+prices In the city of Windsor in Canada. So
+this data set is a sample of the real estate transactions in one city, and
+it's called the housing data frame. It's a cross section,
+as I mentioned of home prices in one city in Canada. Alternatively,
+if you could collect house prices from websites or scrape them from the web,
+that could also be a good source of data for something like this.
+[BLANK_AUDIO]
+So looking at this housing dataset, we see that there are a whole bunch of variables.
+Some of quantitative and there are about six of them that are quantitative and
+six of them that are categorical. So categorical variables
+are also called factors in R. Note that 1 is no and
+2 is yes is how the factor variables are coded in R
+[BLANK_AUDIO]
+Taking a look at these first ten records in housing,
+you'll see that the first row of data has a house whose price is $42,000 and
+a lot size of 5850 Square feet. It has three bedrooms, one bathroom,
+and is two stories tall. The house has a driveway. It does not have a recroom.
+It has a full basement. It has no gas heated hot water system.
+It has no air conditioning. Has a one car garage. And
+is not in a preferred neighborhood of the city.
+[BLANK_AUDIO]
+One important thing to do before you start doing regression is to do
+exploratory data analysis and histograms help with that.
+So it always helps to do histograms of some of the key variables.
+So this is the histogram of prices which is skewed to the right.
+The median value of home sold is $62,000. And
+the main value is 68,122.
+We've also done the histogram of the distribution of lotsizes, and
+this is also skewed to the right. The median value here is 4600 square feet,
+and the mean value is 5,150 square feet.
+It's always useful to do a correlation metrics of the key variables, prior to
+building a linear regression model. As you can see, the correlation between price and
+lotsize is interesting, and will help develop a simple regression model.
+This matrix also shows the density functions along the diagonal and
+scatter plots of the two variables in the lower triangle.
+[BLANK_AUDIO]
+In this scatter plot, the y-axis denotes home prices and
+the x-axis shows the lotsize. A simple linear regression line
+seems a reasonable place to start doing R regression analysis. So please
+take a look at this quiz before you go to the next lesson in this module. The mean
+of a variable that has a right-skewed distribution is smaller than the median.
+[BLANK_AUDIO]
+Answer is false.
+The correlation coefficient can capture the strength of both linear and
+non-linear relationships. The answer is false.
+[MUSIC]

@@ -1,0 +1,65 @@
+Hello, I am Professor Sridhar Narasimhan of the Scheller College of Business at
+Georgia Tech. I'll be teaching this module on linear regression in this course
+on data analytics in business.
+[BLANK_AUDIO]
+There are several lessons in this module.
+The first lesson is on the various steps involved in doing regression analysis,
+which is a very iterative process. The next lesson is
+an example real estate data set that we will use extensively in this module.
+Lesson C is on the commonly used notation in regression analysis.
+Lesson D is on how R squared and adjusted R squared are defined.
+Lesson E is how to use R to do simple or one predictor regression.
+Lessons F and G extend that to multiple variable regression and
+show how R squared and adjusted R squared are calculated.
+Finally, lesson H is about using regression to do prediction.
+[BLANK_AUDIO]
+So there are various steps in regression analysis and
+regression is an iterative process.
+Step one is knowing what problem you are addressing.
+The second step is to have a clear understanding of the type of
+analytics that you plan to do. It's either diagnostic,
+that is understanding why, predictive, what'll happen or prescriptive,
+what to do to make something happen? This in turn affects step number three,
+which is the selection of the relevant variables. Step four is determining V,
+you're going to get the data. Internally within the organisation,
+externally, are you going to purchase data, run experiments etc.
+The next step is the choice of the fitting method. In this module,
+we use ordinary least squares. In step six,
+there is the issue of selecting software and
+using it to fit a model using the data that we have. And
+then we get estimates of the parameter. Step seven is about diagnostics.
+Step eight is to reflect on the model and improve it if necessary.
+Finally, the model is ready for its intended use. Nope,
+that building a regression model is an iterative process as you
+follow the steps in the previous slides, you may have to add
+constant variables and add interaction terms. As the modeler you
+have to be satisfied that you have taken adequate care while developing your model.
+[BLANK_AUDIO]
+Nearly every business function is a candidate for regression analysis.
+I list a few examples to illustrate the broad variety of applications.
+The first example has to do with pricing of use cars. And
+how it is related to it's mileage, it's age, condition, etc.
+The second example has to do with the effect of advertising on sales.
+The code example addresses an operations issue. The fourth
+example is from e-commerce. What is the contribution of a product's ratings and
+price on the likelihood of that product being added to a shopping cart?
+The fifth example is how to set starting salaries for
+new employees based on their work experience and years of education.
+The sixth example is setting the sales price of a house using it's size,
+the number of bedrooms and it's location in a city.
+The second last example is from finance, will a customer default on their loan?
+And how is that associated with his or her credit balance, income,
+age. The last example has to do with customer churn and
+how that is impacted by our customers length of contract and age.
+[BLANK_AUDIO]
+Before we go to the next lesson, try take a moment to answer this quiz.
+Could a variable, say price be either a dependent or an independent variable?
+Answer true, this depends on the purpose of your model. See where price
+appears in examples number one, and number four in the previous slide.
+Next question, a variable that takes binary values for example,
+pass or fail, or true or false cannot be a dependent variable.
+[BLANK_AUDIO]
+The answer is false. We do use 0/1 dependent variables in logistic regression
+in a different module. Example number seven in
+the previous slide is one instance where we have
+to use binary dependent variables. [SOUND]

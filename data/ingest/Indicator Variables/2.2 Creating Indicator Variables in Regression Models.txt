@@ -1,0 +1,48 @@
+In this lesson we show how we can create and
+use indicator or dummy variables in regression model,
+so what should we do about the categorical variable age?
+So is this categorical variable important?
+Does being middle aged or
+old potentially have an effect on amount spent compared to being young?
+How can we include the age variable in a regression
+model that requires numeric values?
+So these are some values of the age variable, so consider that variable,
+we want to investigate the effect of age on amount spent,
+note that age is a categorical variable.
+It has three possible values, young,
+middle or old, we need to quantify this variable.
+So what we need to do is to create indicator or dummy variables,
+since we have three possible values for age,
+we need to create two indicator or dummy variables.
+The base or reference case, with both dummy variable set to 0, is age = young.
+This is the reference group to compare for the other values of the dummy variable.
+It's up to the modeler to determine which value of
+the categorical variable is used as the base case.
+The two dummy variables that we have created are AgeMid and
+AgeOld, and AgeMid is set to 1 if the age of a customer is,
+if he or she is in the is middled aged.
+Zero otherwise, and AgeOld is set to 1 if a customer
+is an older person and set to 0 otherwise.
+So assigning values to the new indicated variables, so
+here is how we're gonna go do it, if you look at the first record,
+it is for a customer who's old, so for that customer the AgeMid
+callable a value of 0 and age old will have value 1.
+The second record is for customer who's middle age for him or
+her the AgeMid column A lot of value 1 and the AgeOld is 0.
+The third record is of a base case, this is a customer who is young and
+for him or her the AgeMid value 0, and the AgeOld value is also set to 0.
+So both indicate a variable to set to 0 for someone who is young.
+And then we can run the regression model amount spent
+equals b0 plus b1 times AgeMid plus b2 times AgeOld.
+We'll see that shortly.
+Before we go to the next lesson, have a go at this quiz.
+With this indicator variables coding scheme, AgeMid and
+AgeOld, defined as earlier, can a record in this dataframe
+have this value (AgeMid = 0, AgeOld equals = 0)?
+The answer is yes, because this record is for
+someone who's young, that is the base case.
+Can a record in the direct marketing dataframe have
+this value, AgeMid = 1, and AgeOld = 1?
+The answer is no, every individual has to be inexactly one age category.
+So, we've seen how to create indicator dummy variables in this lesson.
+[SOUND]
