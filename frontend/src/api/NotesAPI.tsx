@@ -30,6 +30,18 @@ export const NotesAPI = {
 
     return response
   },
+  search: async function (name:any, cancel = false) {
+    const response = await api.request({
+      url: "/products/search",
+      method: "GET",
+      params: {
+        name: name,
+      },
+      signal: cancel ? cancelApiObject[this.search.name].handleRequestCancellation().signal : undefined,
+    })
+
+    return response.data.products
+  },
   create: async function (transcript : File, cancel = false) {
 
     let bodyFormData = new FormData();

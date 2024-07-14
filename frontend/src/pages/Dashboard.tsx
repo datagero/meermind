@@ -3,6 +3,7 @@ import ResponsiveGrid from '../components/ResponsiveGrid';
 import React, { useEffect } from 'react';
 import { Note } from "../types/Note"; // Update the path to the correct location of the 'Note' type file
 import { NotesAPI }  from '../api/NotesAPI';
+import SearchBar from '../components/SearchBar';
 import { app } from '../api/configs/realmConfig';
 import * as Realm from "realm-web";
 interface Props {
@@ -31,6 +32,7 @@ const Dashboard: React.FC<Props> = () => {
         <div>
             <Container maxWidth="lg">
                 <h1>Your Notes</h1>
+                <SearchBar notes={notes || []}/>
                 <ResponsiveGrid notes={notes || []} />
             </Container>
         </div>

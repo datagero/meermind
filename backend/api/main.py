@@ -105,6 +105,7 @@ def fileUpload():
 
                     # save the formatted reponse 
                     hash_id = db.insert_transcript_summary(module_name, name, file_ext, data)
+                    print(hash_id)
 
                 else:
                     return jsonify({'message': 'File type not allowed'}), 400
