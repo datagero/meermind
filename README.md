@@ -8,6 +8,8 @@ Students struggle with disorganized and time-consuming note-taking, making it ha
 ## Repository Overview 
 This document provides a high-level overview of the entire project structure, including key directories and components. It serves as a guide to understanding the layout and functionality of the codebase.
 
+Tech stak includes REACT, Flask, ChatGPT, MongoDB Atlas, and use of Embeddings & Vectors.
+
 ## Data Directory 📊
 The `data/` directory contains sample data and initial datasets used for getting started with understanding the Meermind application. Normally, you would upload files through the UI and these will get persisted in your MongoDB.
 
