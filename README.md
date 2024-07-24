@@ -6,6 +6,7 @@ Welcome to Meermind, an innovative tool designed to help students and profession
 Students struggle with disorganized and time-consuming note-taking, making it hard to collaborate and revisit information. Meermind provides a consistent, AI-powered solution to streamline note-taking, improve information retrieval, and enhance study efficiency.
 
 🏆 Winner "Best Use of MongoDB Atlas" in the "Hack Your Portfolio" MLH Hackathon 🎉
+
 📽️ While we work on a functional demo version, please [watch this video](https://www.youtube.com/watch?v=E7RLCFmFN2o&ab_channel=MatiasV) to get an overview of the project.
 
 ## Repository Overview 
